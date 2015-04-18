@@ -1,11 +1,11 @@
 (function(global) {
     "use strict";
 
-    var str = "ぶっちゃー";
+    var str = "Rockじゃん";
     var fontSize = 18;
-    var fontName ="arial";
+    var fontName ="'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, Osaka, 'ＭＳ Ｐゴシック', 'MS PGothic'";
 
-    var width = 1200;
+    var width = 1400;
     var height = 700;
 
     var cubes = [];
@@ -34,8 +34,6 @@
 
     function generateLogo() {
         createCubes(scene,cubes);
-        setLight(scene);
-        getAsciiBlocks(str,fontSize,fontName)
         render();
     }
 
@@ -54,6 +52,9 @@
         camera = new THREE.PerspectiveCamera(100, width / height, 10, 10000);
         camera.position.set(50,-50,500);
 
+        // light
+        setLight(scene);
+
         // control
         controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -63,6 +64,8 @@
 
     function createCubes(scene,cubes){
         var table = getAsciiBlocks(str,fontSize);
+
+        console.log(table);
 
         table.reverse();
         table.forEach(function(row,rowIndex) {
@@ -106,9 +109,9 @@
         requestAnimationFrame(render);
 
         cubes.forEach(function(c){
-            c.rotation.x += 0.01; // 追加
-            c.rotation.y += 0.01; // 追加
-            c.rotation.z += 0.01; // 追加
+            c.rotation.x += 0.01;
+            c.rotation.y += 0.01;
+            c.rotation.z += 0.01;
 
         });
         renderer.render(scene, camera);
@@ -118,30 +121,32 @@
     function getAsciiBlocks(str,fontSize,fontName) {
         // init
         var i, j;
-        var canvas_tmp = $("<canvas>")[0];
-        if(!canvas_tmp.getContext) return;
-        var context_tmp = canvas_tmp.getContext('2d');
+        var canvasTmp = $("<canvas>")[0];
+        if(!canvasTmp.getContext) return;
+        var contextTmp = canvasTmp.getContext('2d');
         var fontStyle = fontSize + "px " + fontName;
-        var str_width, str_height;
+        var strWidth, strHeight;
         var table = [];
 
+        console.log(contextTmp.measureText(str));
+
         // measure text
-        context_tmp.font = fontStyle;
-        canvas_tmp.width = str_width = context_tmp.measureText(str).width;
-        canvas_tmp.height = str_height = Math.ceil(fontSize * 1.5);
+        contextTmp.font  = fontStyle;
+        canvasTmp.width  = strWidth  = Math.ceil(contextTmp.measureText(str).width);
+        canvasTmp.height = strHeight = Math.ceil(fontSize * 1.5);
 
         // render text
-        context_tmp.font = fontStyle;
-        context_tmp.textBaseline = "top";
-        context_tmp.fillText(str, 0, 0);
+        contextTmp.font = fontStyle;
+        contextTmp.textBaseline = "top";
+        contextTmp.fillText(str, 0, 0);
 
         // get image data
-        var imgdata = context_tmp.getImageData(0, 0, str_width, str_height);
+        var imgdata = contextTmp.getImageData(0, 0, strWidth, strHeight);
         var exist = false;
         var cnt = 0;
-        for(i = 0; i < str_height; i++){
-            for(j = 0; j < str_width; j++){
-                var alpha = imgdata.data[(str_width * i + j) * 4 + 3];
+        for(i = 0; i < strHeight; i++){
+            for(j = 0; j < strWidth; j++){
+                var alpha = imgdata.data[(strWidth * i + j) * 4 + 3];
                 if(alpha >= 128){
                     if(!exist) exist = true;
                     if(!table[i + cnt]) table[i + cnt] = [];
@@ -149,7 +154,7 @@
                 }
             }
             if(table[i + cnt]){
-                for(j = 0; j < str_width; j++){
+                for(j = 0; j < strWidth; j++){
                     if(!table[i + cnt][j]) table[i + cnt][j] = 0;
                 }
             }
