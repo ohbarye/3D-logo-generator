@@ -1,0 +1,13 @@
+body {
+    background: #000000;
+    margin: 32px;
+}
+
+#stage {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.annotation {
+    color: #eeeeee ;
+}
