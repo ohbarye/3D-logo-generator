@@ -1,6 +1,7 @@
 body {
     background: #000000;
     margin: 32px;
+    color: #eeeeee ;
 }
 
 #stage {
@@ -8,6 +9,6 @@ body {
     margin-right: auto;
 }
 
-.annotation {
-    color: #eeeeee ;
+#copyright {
+    float:right;
 }
