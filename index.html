@@ -20,15 +20,21 @@
 <body>
     <form>
         <fieldset>
-            <input type="text" id="str" placeholder="text you wanna 3D-ize!" size="30" maxlength="30"/>
-            <!--
-            <input type="text" id="fontSize" placeholder="font-size" pattern="^[0-9]+$" />
-            -->
-            <input type="button" id="generate" value="generate Logo"/>
-            <span class="annotation">
+            <div>
+                <input type="text" id="str" placeholder="text you wanna 3D-ize!" size="30" maxlength="30"/>
+                <!--
+                <input type="text" id="fontSize" placeholder="font-size" pattern="^[0-9]+$" />
+                -->
+                <input type="button" id="generate" value="generate Logo"/>
+                <input type="checkbox" id="wall" />
+                <label for="wall">show WALL</label>
+            </div>
+            <div>
+            </div>
+            <div class="annotaion">
                 You can change the viewpoint by mouse dragging and the distance by mouse wheel.
-                copyright 2015 <a href="https://github.com/ohbarye/3D-logo-generator">@ohbarye</a>
-            </span>
+                <div id="copyright">copyright 2015 <a href="https://github.com/ohbarye/3D-logo-generator">@ohbarye</a></div>
+            </div>
         </fieldset>
     </form>
 

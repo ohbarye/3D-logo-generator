@@ -1,7 +1,7 @@
 (function(global) {
     "use strict";
 
-    var str = "Rockじゃん";
+    var str = "Am I 3D?";
     var fontSize = 18;
     var fontName ="'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, Osaka, 'ＭＳ Ｐゴシック', 'MS PGothic'";
 
@@ -11,7 +11,7 @@
     var cubes = [];
     var table;
 
-    var scene,renderer,camera,controls;
+    var scene,renderer,camera,controls,wall;
 
     initRender();
 
@@ -30,16 +30,28 @@
 //        }
 
         initRender();
+        showWall();
     });
 
-    function generateLogo() {
-        createCubes(scene,cubes);
-        render();
+    // regenerate
+    $("#wall").change(function(){
+        showWall();
+    });
+
+    function showWall() {
+        if ($("#wall").prop("checked") === true) {
+            scene.add(wall);
+        } else {
+            scene.remove(wall);
+        }
     }
 
     function initRender() {
         // scene
         scene = new THREE.Scene()
+
+        // wall
+        createWall();
 
         // rendering
         renderer = new THREE.WebGLRenderer();
@@ -62,10 +74,13 @@
         generateLogo(str,fontSize)
     }
 
+    function generateLogo() {
+        createCubes(scene,cubes);
+        render();
+    }
+
     function createCubes(scene,cubes){
         var table = getAsciiBlocks(str,fontSize);
-
-        console.log(table);
 
         table.reverse();
         table.forEach(function(row,rowIndex) {
@@ -79,10 +94,20 @@
         })
     }
 
+    function createWall() {
+        // plane
+        var geometry = new THREE.PlaneGeometry(3000,800);
+        var material = new THREE.MeshLambertMaterial({color: "#bbbbbb", side: THREE.DoubleSide});
+        wall = new THREE.Mesh(geometry, material);
+        wall.position.set(0,0,-100);
+        wall.receiveShadow = true;
+    }
+
     function setLight(scene){
         // light
         var light = new THREE.DirectionalLight("#ffffff", 1);
-        light.position.set(0,100,30);
+        light.position.set(1500,0,1000);
+        light.castShadow = true;
         scene.add(light);
         var ambient = new THREE.AmbientLight("#222222", 1);
         scene.add(ambient);
@@ -127,8 +152,6 @@
         var fontStyle = fontSize + "px " + fontName;
         var strWidth, strHeight;
         var table = [];
-
-        console.log(contextTmp.measureText(str));
 
         // measure text
         contextTmp.font  = fontStyle;
